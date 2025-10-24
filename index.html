@@ -1,0 +1,97 @@
+<!--
+    Multi LLM Search Tool
+    A web page to query multiple AI language models simultaneously.
+    Allows users to enter a prompt, select LLMs, and open search tabs.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head section: Contains meta tags, title, favicon, and stylesheets -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi LLM Search Tool</title>
+    <meta name="description"
+        content="Easily search across multiple AI language models like ChatGPT, Grok, Perplexity, Z.ai, and Brave Search simultaneously. Enter your prompt and select models to open in new tabs.">
+    <meta name="keywords"
+        content="AI search, LLM comparison, ChatGPT, Grok, Perplexity, Z.ai, Brave Search, multi-model query">
+    <meta name="author" content="OpenCode Assistant">
+    <!-- Favicon: Simple AI icon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23000'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23fff'>AI</text></svg>">
+    <!-- Pico CSS framework for styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.sand.min.css">
+
+</head>
+
+<!-- Body section: Main content of the page -->
+
+<body>
+    <main class="container" style="max-width: 1000px; margin-top: 5vh;">
+        <h1>Multi LLM Search</h1>
+        <p>Use this tool to query multiple AI language models simultaneously and compare their responses.</p>
+        <!-- Form for user input: prompt and LLM selection -->
+        <form id="searchForm">
+            <textarea placeholder="Enter your prompt" id="prompt" style="height: 300px;" name="prompt"
+                required></textarea>
+            <!-- Fieldset for selecting LLMs -->
+            <fieldset style="display: flex; justify-content:space-between; gap: 1rem;">
+                <label><input type="checkbox" name="llms" value="chatgpt"> ChatGPT</label>
+                <label><input type="checkbox" name="llms" value="grok"> Grok</label>
+                <label><input type="checkbox" name="llms" value="perplexity"> Perplexity</label>
+                <label><input type="checkbox" name="llms" value="zai"> Z.ai</label>
+                <label><input type="checkbox" name="llms" value="brave"> Brave Ask</label>
+                <label><input type="checkbox" name="llms" value="claude"> Claude</label>
+            </fieldset>
+
+            <div role="group" style="gap: 1rem; margin-top: 3vw;">
+                <button class="outline contrast" type="reset">Reset</button>
+                <button class="contrast" type="submit">Open in new tabs</button>
+            </div>
+        </form>
+        <blockquote style="margin-top: 5vh">
+            <small>
+                Allow "Pop-ups and redirects" permission in site settings, as browser blocks opening multiple tabs at
+                once
+            </small>
+        </blockquote>
+    </main>
+
+    <!-- JavaScript for handling form submission and opening tabs -->
+    <script>
+        /**
+         * Multi LLM Search Tool JavaScript
+         * Handles the search button click to open selected LLM tabs with the user's prompt.
+         */
+
+        // Get the submit button element
+        const button = document.querySelector('button[type="submit"]');
+
+        // Object containing URL templates for each LLM, with %s as placeholder for the encoded prompt
+        const urls = {
+            chatgpt: 'https://chatgpt.com/?q=%s',
+            grok: 'https://grok.com/?q=%s',
+            perplexity: 'https://www.perplexity.ai/search?s=o&q=%s',
+            zai: 'https://chat.z.ai/?q=%s',
+            brave: 'https://search.brave.com/ask?q=%s',
+            claude: 'https://claude.ai/new?q=%s'
+        };
+
+        // Add event listener to the search button
+        button.addEventListener('click', function (e) {
+            // Encode the user's prompt for URL safety
+            const prompt = encodeURIComponent(document.getElementById('prompt').value);
+            // Get array of selected LLM values from checkboxes
+            const selectedLlms = Array.from(document.querySelectorAll('input[name="llms"]:checked')).map(cb => cb.value);
+
+            // For each selected LLM, construct the URL and open in a new tab
+            selectedLlms.forEach(llm => {
+                const url = urls[llm].replace('%s', prompt);
+                window.open(url, '_blank');
+            });
+        });
+    </script>
+</body>
+
+</html>
