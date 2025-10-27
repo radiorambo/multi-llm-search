@@ -65,6 +65,14 @@
          * Handles the search button click to open selected LLM tabs with the user's prompt.
          */
 
+        // On page load, check for 'q' URL parameter and set it to the textarea
+        // This adds to chrome search engines to ":search type your prompt here" 
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query) {
+            document.getElementById('prompt').value = decodeURIComponent(query);
+        }
+
         // Get the submit button element
         const button = document.querySelector('button[type="submit"]');
 
