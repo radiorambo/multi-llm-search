@@ -182,27 +182,6 @@
             min-width: 140px;
         }
         
-        button:hover {
-            opacity: 0.8;
-        }
-        
-        button.outline {
-            background: transparent;
-            color: var(--text-primary);
-        }
-        
-        button.outline:hover {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            opacity: 1;
-        }
-        
-        .info-text {
-            color: var(--text-secondary);
-            font-size: var(--text-sm);
-            line-height: 1.6;
-            margin-bottom: var(--space-4);
-        }
         
         .info-text:last-child {
             margin-bottom: 0;
@@ -220,7 +199,7 @@
         
         /* Info section */
         .info-section {
-            margin-top: var(--space-12);
+            margin-top: var(--sp   ace-12);
             border-top: var(--border-thick) solid var(--border-strong);
         }
         
@@ -247,7 +226,7 @@
             p { font-size: var(--text-base); }
             
             #searchForm { padding: var(--space-6); }
-            .checkbox-container { grid-template-columns: 1fr; }
+            .checkbox-container { gri  d-template-columns: 1fr; }
             .button-group { flex-direction: column; }
         }
     </style>
@@ -262,7 +241,7 @@
             <textarea placeholder="Enter your prompt" id="prompt" name="prompt" required></textarea>
             
             <fieldset>
-                <div class="checkbox-container">
+                <div class="che ckbox-container">
                     <label>
                         <input type="checkbox" name="llms" value="chatgpt">
                         <span>ChatGPT</span>
@@ -289,16 +268,7 @@
                     </label>
                 </div>
             </fieldset>
-
-            <div class="button-group">
-                <button class="outline" type="reset">Reset</button>
-                <button type="submit">Open in new tabs</button>
-            </div>
-        </form>
-        
-        <!-- Bare bones Info Section -->
-        <div class="info-section">
-            <div class="info-header">Important Information</div>
+>Important Information</div>
             <div class="info-content">
                 <div class="info-text">
                     <strong>Browser Settings:</strong> Allow "Pop-ups and redirects" permission in site settings, as browser blocks opening multiple tabs at once
@@ -325,16 +295,7 @@
             perplexity: 'https://www.perplexity.ai/search?s=o&q=%s',
             zai: 'https://chat.z.ai/?q=%s',
             brave: 'https://search.brave.com/ask?q=%s',
-            claude: 'https://claude.ai/new?q=%s'
-        };
-
-        // Submit button handler
-        const button = document.querySelector('button[type="submit"]');
-        button.addEventListener('click', function (e) {
-            const prompt = encodeURIComponent(document.getElementById('prompt').value);
-            const selectedLlms = Array.from(document.querySelectorAll('input[name="llms"]:checked')).map(cb => cb.value);
-
-            selectedLlms.forEach(llm => {
+            claude: 'https://clau{
                 const url = urls[llm].replace('%s', prompt);
                 window.open(url, '_blank');
             });
@@ -342,7 +303,7 @@
 
         // Form validation
         document.getElementById('searchForm').addEventListener('submit', function(e) {
-            const prompt = document.getElementById('prompt').value.trim();
+            const prompt = document.   getElementById('prompt').value.trim();
             const selectedLlms = Array.from(document.querySelectorAll('input[name="llms"]:checked'));
             
             if (!prompt) {
@@ -358,10 +319,10 @@
             }
         });
 
-        // Reset form functionality
-        document.getElementById('searchForm').addEventListener('reset', function() {
-            setTimeout(() => {
-                document.getElementById('prompt').focus();
+        // Reset form functi onality
+        document.getElementBy Id('searchForm').addEventListener('reset', function() {
+            setTimeout(() =>  {
+                document.ge tElementById('prompt').focus();
             }, 0);
         });
     </script>
