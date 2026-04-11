@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   issue_comment:
+    types: [created, edited]
 
 jobs:
   pr_agent_job:
@@ -20,9 +21,47 @@ jobs:
         uses: Codium-ai/pr-agent@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          config.model: "gemini/gemini-3-flash-preview"          
-          config.fallback_models: '["gemini/gemini-2.5-flash"]'   
+          config.add_repo_metadata: "true"
+          config.response_language: "en-US"
+          config.large_patch_policy: "clip"
+          config.max_model_tokens: "128000"
+          config.ignore_pr_title: '["^\\[Auto\\]", "^Auto", "^chore\\(deps\\)", "^deps:", "^Bump"]'
+          config.ignore_pr_labels: '["do-not-merge", "skip-review"]'
+          config.ignore_pr_authors: '["dependabot\\[bot\\]"]'
+          ignore.glob: '["dist/**", "**/dist/**"]'
+          auto_best_practices.enable_auto_best_practices: "true"
+          auto_best_practices.utilize_auto_best_practices: "true"
+          config.model: "gemini/gemini-2.5-pro"
+          config.fallback_models: '["gemini/gemini-2.5-flash"]'
           GOOGLE_AI_STUDIO.GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           github_action_config.auto_review: "true"
           github_action_config.auto_describe: "true"
           github_action_config.auto_improve: "true"
+          github_action_config.pr_actions: '["opened", "reopened", "ready_for_review", "review_requested"]'
+          pr_reviewer.require_score_review: "true"
+          pr_reviewer.require_tests_review: "true"
+          pr_reviewer.require_security_review: "true"
+          pr_reviewer.require_todo_scan: "true"
+          pr_reviewer.require_ticket_analysis_review: "true"
+          pr_reviewer.require_can_be_split_review: "true"
+          pr_reviewer.num_max_findings: "5"
+          pr_reviewer.extra_instructions: |
+            Focus on correctness, edge cases, tests, security, and regression risk.
+            Prefer actionable findings over style-only comments.
+            Call out missing tests when behavior changes.
+          pr_description.generate_ai_title: "true"
+          pr_description.publish_labels: "true"
+          pr_description.enable_pr_diagram: "true"
+          pr_description.enable_semantic_files_types: "true"
+          pr_description.collapsible_file_list: "adaptive"
+          pr_code_suggestions.focus_only_on_problems: "true"
+          pr_code_suggestions.num_code_suggestions_per_chunk: "4"
+          pr_code_suggestions.max_number_of_calls: "4"
+          pr_code_suggestions.suggestions_score_threshold: "7"
+          pr_code_suggestions.dual_publishing_score_threshold: "9"
+          pr_code_suggestions.demand_code_suggestions_self_review: "true"
+          pr_code_suggestions.code_suggestions_self_review_text: "I reviewed these suggestions and will apply the relevant ones."
+          pr_code_suggestions.extra_instructions: |
+            Prefer direct fixes over new abstractions.
+            Keep suggestions aligned with the existing codebase patterns.
+            Avoid style-only suggestions unless they materially improve readability.
